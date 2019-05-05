@@ -244,7 +244,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btnCargar" min="-2" pref="141" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnGuardar" pref="137" max="32767" attributes="0"/>
+                          <Component id="btnGuardar" max="32767" attributes="0"/>
                       </Group>
                       <Component id="btn_salir" alignment="0" max="32767" attributes="0"/>
                       <Component id="btn_creditos" alignment="0" max="32767" attributes="0"/>
@@ -293,6 +293,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Prueba de aleatoriedad"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_pruebasActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_creditos">
           <Properties>
