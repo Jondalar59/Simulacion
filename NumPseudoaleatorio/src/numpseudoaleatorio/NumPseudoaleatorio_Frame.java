@@ -19,7 +19,8 @@ import numpseudoaleatorio.Creditos;
 
 public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
 
-    private ArrayList<Double> ArrayResultados = new ArrayList<Double>();
+    public static ArrayList<Double> ArrayResultados = new ArrayList<Double>();
+
     JFileChooser seleccionar = new JFileChooser();
     File archivo;
     FileInputStream entrada;
@@ -376,7 +377,7 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
             numero = (cmultiplicativa * semilla + caditiva) % modulo;
             numero2 = (double) numero / (double) (modulo - 1);
             BDNumero2 = new BigDecimal(numero2);
-            BDNumero2.setScale(4, RoundingMode.UP);
+            BDNumero2.setScale(4, RoundingMode.HALF_UP);
 
             //System.out.printf("%d. %d (%.4f)\n", i ,numero ,numero2 );
             cadenaResultado += ("\n" + " r" + i + ": " + BDNumero2 + "\n");
