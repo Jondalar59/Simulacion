@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.io.*;
+import java.util.ArrayList;
 import javafx.stage.FileChooser;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
@@ -21,10 +22,13 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
     FileInputStream entrada;
     FileOutputStream salida;
     
+    
     public NumPseudoaleatorio_Frame() {
         initComponents();
         setLocationRelativeTo(null);
     }
+    
+    public static ArrayList<Double> ArrayResultados = new ArrayList<Double>();
     
     public String AbrirArchivo (File archivo){
         String documento = "";
@@ -367,11 +371,14 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
         caditiva = Integer.parseInt(text_caditiva.getText());
         modulo = Integer.parseInt(text_modulo.getText());
         
+        
+        
         for (i=1; i<=4096; i++){
             numero = (cmultiplicativa*semilla + caditiva) % modulo;   
             numero2 = (double)numero / (double)(modulo-1);
             //System.out.printf("%d. %d (%.4f)\n", i ,numero ,numero2 );
             cadenaResultado +=("\n" + " r" +i + ": " + numero2 + "\n");
+            ArrayResultados.add(numero2);
             semilla = numero;  
         }
         txtArea.setText(cadenaResultado);
