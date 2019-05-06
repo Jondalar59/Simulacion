@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import javafx.stage.FileChooser;
 import javax.swing.BoxLayout;
@@ -17,37 +19,35 @@ import numpseudoaleatorio.Acerca;
 
 public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
 
+    public static ArrayList<Double> ArrayResultados = new ArrayList<Double>();
     JFileChooser seleccionar = new JFileChooser();
     File archivo;
     FileInputStream entrada;
     FileOutputStream salida;
-    
-    
+
     public NumPseudoaleatorio_Frame() {
         initComponents();
         setLocationRelativeTo(null);
     }
-    
-    public static ArrayList<Double> ArrayResultados = new ArrayList<Double>();
-    
-    public String AbrirArchivo (File archivo){
+
+    public String AbrirArchivo(File archivo) {
         String documento = "";
         try {
             entrada = new FileInputStream(archivo);
             int ascci;
-            while((ascci=entrada.read()) !=-1){
-                char caracter = (char)ascci;
+            while ((ascci = entrada.read()) != -1) {
+                char caracter = (char) ascci;
                 documento += caracter;
             }
         } catch (Exception e) {
         }
         return documento;
     }
-    
-    public String GuardarArchivo(File archivo, String documento){
+
+    public String GuardarArchivo(File archivo, String documento) {
         String mensaje = null;
         try {
-            salida = new FileOutputStream(archivo); 
+            salida = new FileOutputStream(archivo);
             byte[] bytxt = documento.getBytes();
             salida.write(bytxt);
             mensaje = "Archivo guardado correctamente";
@@ -55,7 +55,7 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
         }
         return mensaje;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -320,18 +320,17 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
     private void btn_creditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_creditosActionPerformed
         Acerca Acerca = new Acerca();
         Acerca.setVisible(true);
-        
-        
+
     }//GEN-LAST:event_btn_creditosActionPerformed
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
-        if(seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION){
+        if (seleccionar.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
             archivo = seleccionar.getSelectedFile();
-            if(archivo.canRead()){
-                if(archivo.getName().endsWith("txt")){
+            if (archivo.canRead()) {
+                if (archivo.getName().endsWith("txt")) {
                     String documento = AbrirArchivo(archivo);
                     txtArea.setText(documento);
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "El archivo no es compatible");
                 }
             }
@@ -339,17 +338,17 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCargarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if(seleccionar.showDialog(null, "Guardar") == JFileChooser.APPROVE_OPTION){
+        if (seleccionar.showDialog(null, "Guardar") == JFileChooser.APPROVE_OPTION) {
             archivo = seleccionar.getSelectedFile();
-            if(archivo.getName().endsWith("txt")){
+            if (archivo.getName().endsWith("txt")) {
                 String documento = txtArea.getText();
                 String mensaje = GuardarArchivo(archivo, documento);
-                if(mensaje!=null){
+                if (mensaje != null) {
                     JOptionPane.showMessageDialog(null, mensaje);
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "El archivo no es compatible");
                 }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Extensión de archivo inválida");
             }
         }
@@ -358,28 +357,31 @@ public class NumPseudoaleatorio_Frame extends javax.swing.JFrame {
     private void btn_CalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CalcularActionPerformed
         if (text_semilla.getText().length() == 0 || text_cmultiplicativa.getText().length() == 0 || text_caditiva.getText().length() == 0 || text_modulo.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "Datos faltantes");
-            return; 
-   }
-        
-        int semilla, cmultiplicativa, caditiva, modulo; 
-        int i, numero;  
+            return;
+        }
+
+        int semilla, cmultiplicativa, caditiva, modulo;
+        int i, numero;
         double numero2 = 0;
         String cadenaResultado = "Los resultados son: ";
-        
+
         semilla = Integer.parseInt(text_semilla.getText());
         cmultiplicativa = Integer.parseInt(text_cmultiplicativa.getText());
         caditiva = Integer.parseInt(text_caditiva.getText());
         modulo = Integer.parseInt(text_modulo.getText());
-        
-        
-        
-        for (i=1; i<=4096; i++){
-            numero = (cmultiplicativa*semilla + caditiva) % modulo;   
-            numero2 = (double)numero / (double)(modulo-1);
+        double guardar = 0;
+
+        for (i = 1; i <= 4096; i++) {
+            numero = (cmultiplicativa * semilla + caditiva) % modulo;
+            numero2 = (double) numero / (double) (modulo - 1);
+            BigDecimal BDNumero2 = new BigDecimal(numero2);
+            BDNumero2 = BDNumero2.setScale(4, RoundingMode.HALF_UP);
             //System.out.printf("%d. %d (%.4f)\n", i ,numero ,numero2 );
-            cadenaResultado +=("\n" + " r" +i + ": " + numero2 + "\n");
-            ArrayResultados.add(numero2);
-            semilla = numero;  
+            cadenaResultado += ("\n" + " r" + i + ": " + BDNumero2 + "\n");
+            semilla = numero;
+            guardar = BDNumero2.doubleValue();
+            ArrayResultados.add(guardar);
+
         }
         txtArea.setText(cadenaResultado);
     }//GEN-LAST:event_btn_CalcularActionPerformed
